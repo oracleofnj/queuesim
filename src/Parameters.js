@@ -1,21 +1,70 @@
-import React from 'react'
+import React, { Component } from 'react'
 import ParameterInput from './ParameterInput.js'
 
-const Parameters = (props) => (
-  <div className='container-fluid'>
-    <div className='row'>
-      <h3 className='col-sm-12'>Parameters</h3>
-    </div>
-    <div className='row'>
-      <form className='form-horizontal'>
-        <ParameterInput name='foo' labelText='Number of Doctors' addOnText={null} />
-        <ParameterInput name='foo' labelText='Mean Time Between Arrivals' addOnText='minutes' />
-        <ParameterInput name='foo' labelText='Min Visit Time' addOnText='minutes' />
-        <ParameterInput name='foo' labelText='Max Visit Time' addOnText='minutes' />
-        <ParameterInput name='foo' labelText='Number of Simulations' addOnText={null} />
-      </form>
-    </div>
-  </div>
-)
+class Parameters extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      numDocs: 3,
+      meanTimeBetweenArrival: 10,
+      minVisitTime: 5,
+      maxVisitTime: 25,
+      numSims: 2000
+    }
+    this.docChange = this.docChange.bind(this)
+    this.timeBetweenChange = this.timeBetweenChange.bind(this)
+    this.minTimeChange = this.minTimeChange.bind(this)
+    this.maxTimeChange = this.maxTimeChange.bind(this)
+    this.numSimsChange = this.numSimsChange.bind(this)
+  }
+  docChange (e) { this.setState({ ...this.state, numDocs: parseInt(e.target.value) }) }
+  timeBetweenChange (e) { this.setState({ ...this.state, meanTimeBetweenArrival: parseInt(e.target.value) }) }
+  minTimeChange (e) { this.setState({ ...this.state, minVisitTime: parseInt(e.target.value) }) }
+  maxTimeChange (e) { this.setState({ ...this.state, maxVisitTime: parseInt(e.target.value) }) }
+  numSimsChange (e) { this.setState({ ...this.state, numSims: parseInt(e.target.value) }) }
+  render () {
+    return (
+      <div className='container-fluid'>
+        <div className='row'>
+          <h3 className='col-sm-12'>Parameters</h3>
+        </div>
+        <div className='row'>
+          <form className='form-horizontal'>
+            <ParameterInput
+              labelText='Number of Doctors'
+              addOnText={null}
+              value={this.state.numDocs}
+              changeFn={this.docChange}
+            />
+            <ParameterInput
+              labelText='Mean Time Between Arrivals'
+              addOnText='minutes'
+              value={this.state.meanTimeBetweenArrival}
+              changeFn={this.timeBetweenChange}
+            />
+            <ParameterInput
+              labelText='Min Visit Time'
+              addOnText='minutes'
+              value={this.state.minVisitTime}
+              changeFn={this.minTimeChange}
+            />
+            <ParameterInput
+              labelText='Max Visit Time'
+              addOnText='minutes'
+              value={this.state.maxVisitTime}
+              changeFn={this.maxTimeChange}
+            />
+            <ParameterInput
+              labelText='Number of Simulations'
+              addOnText={null}
+              value={this.state.numSims}
+              changeFn={this.numSimsChange}
+            />
+          </form>
+        </div>
+      </div>
+    )
+  }
+}
 
 export default Parameters
