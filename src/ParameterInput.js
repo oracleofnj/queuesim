@@ -1,7 +1,6 @@
 import React from 'react'
 
 const ParameterInput = (props) => (
-
   <div className='form-group'>
     <label className='col-sm-4 control-label'>
       {props.labelText}
