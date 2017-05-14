@@ -17,11 +17,11 @@ class Parameters extends Component {
     this.maxTimeChange = this.maxTimeChange.bind(this)
     this.numSimsChange = this.numSimsChange.bind(this)
   }
-  docChange (e) { this.setState({ ...this.state, numDocs: parseInt(e.target.value) }) }
-  timeBetweenChange (e) { this.setState({ ...this.state, meanTimeBetweenArrival: parseInt(e.target.value) }) }
-  minTimeChange (e) { this.setState({ ...this.state, minVisitTime: parseInt(e.target.value) }) }
-  maxTimeChange (e) { this.setState({ ...this.state, maxVisitTime: parseInt(e.target.value) }) }
-  numSimsChange (e) { this.setState({ ...this.state, numSims: parseInt(e.target.value) }) }
+  docChange (e) { this.setState({ ...this.state, numDocs: parseInt(e.target.value, 10) }) }
+  timeBetweenChange (e) { this.setState({ ...this.state, meanTimeBetweenArrival: parseInt(e.target.value, 10) }) }
+  minTimeChange (e) { this.setState({ ...this.state, minVisitTime: parseInt(e.target.value, 10) }) }
+  maxTimeChange (e) { this.setState({ ...this.state, maxVisitTime: parseInt(e.target.value, 10, 10) }) }
+  numSimsChange (e) { this.setState({ ...this.state, numSims: parseInt(e.target.value, 10) }) }
   render () {
     return (
       <div className='container-fluid'>
