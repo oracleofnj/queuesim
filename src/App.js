@@ -1,15 +1,12 @@
 import React, { Component } from 'react'
-import 'bootstrap/less/bootstrap.less'
+import Parameters from './Parameters.js'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap-theme.css'
 
 class App extends Component {
   render () {
     return (
-      <div className='App'>
-        <h1 className='App-intro'>
-          To get started, edit <code>src/App.js</code> and save to reload.
-          Queue contents:
-        </h1>
-      </div>
+      <Parameters />
     )
   }
 }
