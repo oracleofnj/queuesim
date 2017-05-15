@@ -1,22 +1,20 @@
-import PriorityQueue from 'js-priority-queue'
-
+import PriorityQueue from 'fastpriorityqueue'
 import Queue from './Queue.js'
 import randomExponential from './Stats.js'
+import times from 'lodash/times'
 
 function generateNextArrival (t, poisTime, maxTime, eventQueue) {
   let nextArrival = t + randomExponential(1.0 / poisTime)
   if (nextArrival < maxTime) {
-    eventQueue.queue({eventTime: nextArrival, eventType: 'patientArrival'})
+    eventQueue.add({eventTime: nextArrival, eventType: 'patientArrival'})
   }
 }
 
 function runClinicOnce (numDoctors, minDocTime, maxDocTime, poisTime) {
   const clinicOpen = 9 * 60
   const clinicClose = 16 * 60
-  let eventQueue = new PriorityQueue({
-    comparator: function (a, b) { return a.eventTime - b.eventTime },
-    initialValues: [{eventTime: clinicOpen, eventType: 'clinicOpen'}]
-  })
+  let eventQueue = new PriorityQueue((a, b) => a.eventTime < b.eventTime)
+  eventQueue.add({eventTime: clinicOpen, eventType: 'clinicOpen'})
   let docAvailable = []
   let i = 0
   let noDocs = false
@@ -28,8 +26,8 @@ function runClinicOnce (numDoctors, minDocTime, maxDocTime, poisTime) {
   for (i = 0; i < numDoctors; i++) {
     docAvailable[i] = true
   }
-  while (eventQueue.length > 0) {
-    var item = eventQueue.dequeue()
+  while (!eventQueue.isEmpty()) {
+    var item = eventQueue.poll()
     orderedEvents.push(item)
     switch (item.eventType) {
       case 'clinicOpen':
@@ -41,7 +39,7 @@ function runClinicOnce (numDoctors, minDocTime, maxDocTime, poisTime) {
         numPatients++
         for (i = 0; i < numDoctors; i++) {
           if (docAvailable[i]) {
-            eventQueue.queue({
+            eventQueue.add({
               eventTime: item.eventTime,
               eventType: 'seeDoctor',
               docNum: i,
@@ -52,7 +50,7 @@ function runClinicOnce (numDoctors, minDocTime, maxDocTime, poisTime) {
           }
         }
         if (noDocs) {
-          eventQueue.queue({
+          eventQueue.add({
             eventTime: item.eventTime,
             eventType: 'getInLine'
           })
@@ -60,7 +58,7 @@ function runClinicOnce (numDoctors, minDocTime, maxDocTime, poisTime) {
         break
       case 'seeDoctor':
         docAvailable[item.docNum] = false
-        eventQueue.queue({
+        eventQueue.add({
           eventTime: item.eventTime + minDocTime + (maxDocTime - minDocTime) * Math.random(),
           eventType: 'docFinish',
           docNum: item.docNum
@@ -74,7 +72,7 @@ function runClinicOnce (numDoctors, minDocTime, maxDocTime, poisTime) {
         if (!patientQueue.isEmpty()) {
           let arrivedAt = patientQueue.dequeue()
           waits.push(item.eventTime - arrivedAt)
-          eventQueue.queue({
+          eventQueue.add({
             eventTime: item.eventTime,
             eventType: 'seeDoctor',
             docNum: item.docNum,
@@ -101,12 +99,9 @@ function runClinicOnce (numDoctors, minDocTime, maxDocTime, poisTime) {
 }
 
 function runClinic (numDocs, poisTime, minDocTime, maxDocTime, numSims) {
-  let i = 0
-  let sims = []
-  for (i = 0; i < numSims; i++) {
-    sims.push(runClinicOnce(numDocs, minDocTime, maxDocTime, poisTime))
-  }
-  return sims
+  return times(numSims, () =>
+    runClinicOnce(numDocs, minDocTime, maxDocTime, poisTime)
+  )
 }
 
 export default runClinic

@@ -1,5 +1,5 @@
 import React from 'react'
-import {sum} from 'lodash/math'
+import sum from 'lodash/sum'
 
 const PercentileResult = (props) => {
   function prettyPrint (n) {
