@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Parameters from './Parameters.js'
+import Results from './Results.js'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/css/bootstrap-theme.css'
 
@@ -26,18 +27,33 @@ class App extends Component {
   numSimsChange (e) { this.setState({ ...this.state, numSims: parseInt(e.target.value, 10) }) }
   render () {
     return (
-      <Parameters
-        numDocs={this.state.numDocs}
-        meanTimeBetweenArrival={this.state.meanTimeBetweenArrival}
-        minVisitTime={this.state.minVisitTime}
-        maxVisitTime={this.state.maxVisitTime}
-        numSims={this.state.numSims}
-        docChange={this.docChange}
-        timeBetweenChange={this.timeBetweenChange}
-        minTimeChange={this.minTimeChange}
-        maxTimeChange={this.maxTimeChange}
-        numSimsChange={this.numSimsChange}
-      />
+      <div className='container-fluid'>
+        <div className='row'>
+          <h3 className='col-sm-12'>Parameters</h3>
+        </div>
+        <Parameters
+          numDocs={this.state.numDocs}
+          meanTimeBetweenArrival={this.state.meanTimeBetweenArrival}
+          minVisitTime={this.state.minVisitTime}
+          maxVisitTime={this.state.maxVisitTime}
+          numSims={this.state.numSims}
+          docChange={this.docChange}
+          timeBetweenChange={this.timeBetweenChange}
+          minTimeChange={this.minTimeChange}
+          maxTimeChange={this.maxTimeChange}
+          numSimsChange={this.numSimsChange}
+        />
+        <div className='row'>
+          <h3 className='col-sm-12'>Results</h3>
+        </div>
+        <Results
+          numDocs={this.state.numDocs}
+          meanTimeBetweenArrival={this.state.meanTimeBetweenArrival}
+          minVisitTime={this.state.minVisitTime}
+          maxVisitTime={this.state.maxVisitTime}
+          numSims={this.state.numSims}
+        />
+      </div>
     )
   }
 }
